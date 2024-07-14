@@ -3,8 +3,8 @@ const state = {
   guests: []
 }
 
-// Grab element on the page where main party list will appear.
-const main = document.querySelector(`main`);
+// Grab elements in html where content will appear.
+const body = document.querySelector(`body`);
 
 // Fetch guest list from API
 const getGuests = async () => {
@@ -26,22 +26,57 @@ getGuests();
 const renderGuests = () => {
   // Make ul inside of which guests will be listed
   const ul = document.createElement(`ul`);
-  // Put ul inside main
-  main.append(ul);
-
-console.log(state.guests);
+  // Put ul at bottom of body
+  body.append(ul);
 
   // For each guest in the state array, make an LI
-  const guestList = state.guests.forEach(guest => {
+  state.guests.forEach(guest => {
     const li = document.createElement(`li`);
     ul.append(li);
     // Put each guest's name in the LI
     li.innerText = guest.name;
   });
-}
 
-// When you click on a guest, you go to a details page about them
-  // Put event listener on each guest
-  // When you click on it, it uses the inner text to identify which guest you clicked on
-  // Match that name with a name from the guests array and render a page with their details 
-  // Insert back button on details page to re-render main page
+  // When you click on a guest, you go to a details page about them
+  //Grab list items
+  const guestListItems = document.querySelectorAll(`li`);
+
+  // Put event listener on list items that acts on click.
+  guestListItems.forEach((guestLI) => {
+    
+    //When you click on it, it uses the inner text to identify which guest you clicked on.  
+    guestLI.addEventListener(`click`, (event) => {
+      const clickedGuest = state.guests.find((guest) => {
+        return guest.name === event.target.innerText;  
+      })
+
+      // Render a page with their details
+      body.innerHTML = `
+      <h1>Guest Info</h1>
+      <ul>
+        <li>Guest ID: ${clickedGuest.id}</li>
+        <br>
+        <li>Name: ${clickedGuest.name}</li>
+        <br>
+        <li>Email: ${clickedGuest.email}</li>
+        <br>
+        <li>Phone: ${clickedGuest.phone}</li>
+        <br>
+        <button>Back to Guest List</button>
+      </ul>
+      ` 
+
+      // Back button re-renders main page
+      const button = document.querySelector(`button`);
+
+      button.addEventListener(`click`, () => {
+        body.innerHTML = `
+        <h1>My Guests</h1>
+        `
+        renderGuests();
+      })
+
+    })
+
+})
+}
