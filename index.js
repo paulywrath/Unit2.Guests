@@ -1,12 +1,24 @@
 // Make state object with empty array inside to store list of guests from API
+const state = {
+  guests: []
+}
 
 // Grab element on the page where main party list will appear.
 
 // Fetch guest list from API
-  // Async function
-  // Fetch data. Remember await.
-  // Convert readable stream to be actually readable with JSON.
-  // Store in an array in the state.
+const getGuests = async () => {
+  try { 
+    const response = await fetch (`https://fsa-crud-2aa9294fe819.herokuapp.com/api/2406-FTB-ET-WEB-FT/guests`);
+    const responseJSON = await response.json();
+    // Store guests in an array in the state.
+    state.guests = responseJSON;
+  } catch (e) {
+    alert(e);
+  }
+}
+
+getGuests();
+  
 
 // Render guest list on page
   // Make ul inside of which guests will be listed
