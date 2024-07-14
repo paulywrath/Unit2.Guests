@@ -4,6 +4,7 @@ const state = {
 }
 
 // Grab element on the page where main party list will appear.
+const main = document.querySelector(`main`);
 
 // Fetch guest list from API
 const getGuests = async () => {
@@ -11,7 +12,8 @@ const getGuests = async () => {
     const response = await fetch (`https://fsa-crud-2aa9294fe819.herokuapp.com/api/2406-FTB-ET-WEB-FT/guests`);
     const responseJSON = await response.json();
     // Store guests in an array in the state.
-    state.guests = responseJSON;
+    state.guests = responseJSON.data;
+    renderGuests();
   } catch (e) {
     alert(e);
   }
@@ -21,9 +23,22 @@ getGuests();
   
 
 // Render guest list on page
+const renderGuests = () => {
   // Make ul inside of which guests will be listed
+  const ul = document.createElement(`ul`);
+  // Put ul inside main
+  main.append(ul);
+
+console.log(state.guests);
+
   // For each guest in the state array, make an LI
-  // Put each guest's name in the LI
+  const guestList = state.guests.forEach(guest => {
+    const li = document.createElement(`li`);
+    ul.append(li);
+    // Put each guest's name in the LI
+    li.innerText = guest.name;
+  });
+}
 
 // When you click on a guest, you go to a details page about them
   // Put event listener on each guest
