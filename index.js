@@ -3,8 +3,8 @@ const state = {
   guests: []
 }
 
-// Grab element on the page where main party list will appear.
-const main = document.querySelector(`main`);
+// Grab elements in html where content will appear.
+const body = document.querySelector(`body`);
 
 // Fetch guest list from API
 const getGuests = async () => {
@@ -26,8 +26,8 @@ getGuests();
 const renderGuests = () => {
   // Make ul inside of which guests will be listed
   const ul = document.createElement(`ul`);
-  // Put ul inside main
-  main.append(ul);
+  // Put ul at bottom of body
+  body.append(ul);
 
   // For each guest in the state array, make an LI
   state.guests.forEach(guest => {
@@ -49,13 +49,34 @@ const renderGuests = () => {
       const clickedGuest = state.guests.find((guest) => {
         return guest.name === event.target.innerText;  
       })
-      console.log(clickedGuest);
-      // Match that name with a name from the guests array and render a page with their details 
+
+      // Render a page with their details
+      body.innerHTML = `
+      <h1>Guest Info</h1>
+      <ul>
+        <li>Guest ID: ${clickedGuest.id}</li>
+        <br>
+        <li>Name: ${clickedGuest.name}</li>
+        <br>
+        <li>Email: ${clickedGuest.email}</li>
+        <br>
+        <li>Phone: ${clickedGuest.phone}</li>
+        <br>
+        <button>Back to Guest List</button>
+      </ul>
+      ` 
+
+      // Back button re-renders main page
+      const button = document.querySelector(`button`);
+
+      button.addEventListener(`click`, () => {
+        body.innerHTML = `
+        <h1>My Guests</h1>
+        `
+        renderGuests();
+      })
 
     })
 
 })
 }
-
-
-  // Insert back button on details page to re-render main page
