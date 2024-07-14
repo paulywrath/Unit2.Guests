@@ -29,19 +29,33 @@ const renderGuests = () => {
   // Put ul inside main
   main.append(ul);
 
-console.log(state.guests);
-
   // For each guest in the state array, make an LI
-  const guestList = state.guests.forEach(guest => {
+  state.guests.forEach(guest => {
     const li = document.createElement(`li`);
     ul.append(li);
     // Put each guest's name in the LI
     li.innerText = guest.name;
   });
+
+  // When you click on a guest, you go to a details page about them
+  //Grab list items
+  const guestListItems = document.querySelectorAll(`li`);
+
+  // Put event listener on list items that acts on click.
+  guestListItems.forEach((guestLI) => {
+    
+    //When you click on it, it uses the inner text to identify which guest you clicked on.  
+    guestLI.addEventListener(`click`, (event) => {
+      const clickedGuest = state.guests.find((guest) => {
+        return guest.name === event.target.innerText;  
+      })
+      console.log(clickedGuest);
+      // Match that name with a name from the guests array and render a page with their details 
+
+    })
+
+})
 }
 
-// When you click on a guest, you go to a details page about them
-  // Put event listener on each guest
-  // When you click on it, it uses the inner text to identify which guest you clicked on
-  // Match that name with a name from the guests array and render a page with their details 
+
   // Insert back button on details page to re-render main page
